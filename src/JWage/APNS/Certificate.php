@@ -22,7 +22,7 @@ class Certificate
      */
     public function __construct($certificateString, $password = null)
     {
-        $this->certificateString =  (string) $certificateString;
+        $this->certificateString = (string) $certificateString;
         $this->password = $password;
     }
 
