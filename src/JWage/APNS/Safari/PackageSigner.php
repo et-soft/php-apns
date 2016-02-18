@@ -10,13 +10,13 @@ class PackageSigner
 {
     /**
      * Creates a package signature using the given certificate and package directory.
-     *
      * @param \JWage\APNS\Certificate $certificate
      * @param \JWage\APNS\Safari\Package $package
-     *
+     * @param $intermediateCertificate
      * @return string Path of signature
+     * @throws ErrorException
      */
-    public function createPackageSignature(Certificate $certificate, Package $package)
+    public function createPackageSignature(Certificate $certificate, Package $package, $intermediateCertificate)
     {
         $pkcs12 = $certificate->getCertificateString();
         $certPassword = $certificate->getPassword();
@@ -33,7 +33,7 @@ class PackageSigner
         // Sign the manifest.json file with the private key from the certificate
         $certData = openssl_x509_read($certs['cert']);
         $privateKey = openssl_pkey_get_private($certs['pkey'], $certPassword);
-        openssl_pkcs7_sign($manifestJsonPath, $signaturePath, $certData, $privateKey, array(), PKCS7_BINARY | PKCS7_DETACHED);
+        openssl_pkcs7_sign($manifestJsonPath, $signaturePath, $certData, $privateKey, array(), PKCS7_BINARY | PKCS7_DETACHED, $intermediateCertificate);
 
         // Convert the signature from PEM to DER
         $signaturePem = file_get_contents($signaturePath);
