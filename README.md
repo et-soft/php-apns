@@ -35,6 +35,22 @@ $package = $packageGenerator->createPushPackageForUser('userid');
 echo $package->getZipPath();
 ```
 
+If you need set Intermediate Certificate, example: AppleWWDRCA.pem (since 14 Feb 2016). Add path in constructor PackageGenerator:
+
+```php
+...
+$packageGenerator = new PackageGenerator(
+    $certificate, '/base/pushPackage/path', 'yourdomain.com', '/path/to/AppleWWDRCA.pem'
+);
+...
+```
+
+If you have AppleWWDRCA.cer, and you want to get PEM format. Try to call this command in UNIX console:
+
+
+    openssl x509 -in AppleWWDRCA.cer -inform DER -out AppleWWDRCA.pem -outform PEM
+
+
 ## Sending Notifications
 
 ```php
