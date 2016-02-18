@@ -1,5 +1,5 @@
 {
-    "name": "jwage/php-apns",
+    "name": "et-soft/php-apns",
     "type": "library",
     "description": "Object Oriented PHP Apple Push Notification Integration Library",
     "keywords": ["apple", "notifications", "apns"],
