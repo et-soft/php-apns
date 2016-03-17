@@ -53,6 +53,6 @@ class APNSMessage
      */
     private function jsonEncode(array $payload)
     {
-        return json_encode($payload);
+        return json_encode($payload, JSON_UNESCAPED_UNICODE);
     }
 }
