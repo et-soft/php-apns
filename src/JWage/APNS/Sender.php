@@ -21,29 +21,32 @@ class Sender
 
     /**
      * Sends a safari website push notification to the given deviceToken.
-     *
      * @param string $deviceToken
-     * @param string $title 
+     * @param string $title
      * @param string $body
      * @param string $deepLink
+     * @param array $aps
+     * @param array $external
+     * @return int
      */
-    public function send($deviceToken, $title, $body, $deepLink = null)
+    public function send($deviceToken, $title, $body, $deepLink = null, $aps = array(), $external = array())
     {
         return $this->client->sendPayload(
-            $deviceToken, $this->createPayload($title, $body, $deepLink)
+            $deviceToken, $this->createPayload($title, $body, $deepLink, $aps, $external)
         );
     }
 
     /**
      * Creates a Payload instance.
-     *
      * @param string $title
      * @param string $body
      * @param string $deepLink
-     * @return \JWage\APNS\Payload
+     * @param array $aps
+     * @param array $external
+     * @return Payload
      */
-    private function createPayload($title, $body, $deepLink = null)
+    private function createPayload($title, $body, $deepLink = null, $aps = array(), $external = array())
     {
-        return new Payload($title, $body, $deepLink);
+        return new Payload($title, $body, $deepLink, $aps, $external);
     }
 }

@@ -20,17 +20,30 @@ class Payload
     private $deepLink;
 
     /**
+     * @var array
+     */
+    private $aps;
+
+    /**
+     * @var array
+     */
+    private $external;
+
+    /**
      * Construct.
-     *
      * @param string $title
      * @param string $body
      * @param string $deepLink
+     * @param array $aps
+     * @param array $external
      */
-    public function __construct($title, $body, $deepLink = null)
+    public function __construct($title, $body, $deepLink = null, $aps = array(), $external = array())
     {
         $this->title = $title;
         $this->body = $body;
         $this->deepLink = $deepLink;
+        $this->aps = $aps;
+        $this->external = $external;
     }
 
     /**
@@ -40,7 +53,7 @@ class Payload
      */
     public function getPayload()
     {
-        return array(
+        $payload = array(
             'aps' => array(
                 'alert' => array(
                     'title' => $this->title,
@@ -51,5 +64,16 @@ class Payload
                 ),
             ),
         );
+
+        if ( !empty( $this->aps ) )
+        {
+            $payload[ 'aps' ] += $this->aps;
+        }
+        if ( !empty( $this->external ) )
+        {
+            $payload = array_merge( $payload, $this->external );
+        }
+
+        return $payload;
     }
 }
