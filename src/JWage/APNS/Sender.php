@@ -25,14 +25,13 @@ class Sender
      * @param string $title
      * @param string $body
      * @param string $deepLink
-     * @param array $aps
-     * @param array $external
+     * @param array $extend
      * @return int
      */
-    public function send($deviceToken, $title, $body, $deepLink = null, $aps = array(), $external = array())
+    public function send($deviceToken, $title, $body, $deepLink = null, $extend = array())
     {
         return $this->client->sendPayload(
-            $deviceToken, $this->createPayload($title, $body, $deepLink, $aps, $external)
+            $deviceToken, $this->createPayload($title, $body, $deepLink, $extend)
         );
     }
 
@@ -41,12 +40,11 @@ class Sender
      * @param string $title
      * @param string $body
      * @param string $deepLink
-     * @param array $aps
-     * @param array $external
+     * @param array $extend
      * @return Payload
      */
-    private function createPayload($title, $body, $deepLink = null, $aps = array(), $external = array())
+    private function createPayload($title, $body, $deepLink = null, $extend = array())
     {
-        return new Payload($title, $body, $deepLink, $aps, $external);
+        return new Payload($title, $body, $deepLink, $extend);
     }
 }

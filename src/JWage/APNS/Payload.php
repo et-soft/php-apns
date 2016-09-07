@@ -22,28 +22,21 @@ class Payload
     /**
      * @var array
      */
-    private $aps;
-
-    /**
-     * @var array
-     */
-    private $external;
+    private $extend;
 
     /**
      * Construct.
      * @param string $title
      * @param string $body
      * @param string $deepLink
-     * @param array $aps
-     * @param array $external
+     * @param array $extend
      */
-    public function __construct($title, $body, $deepLink = null, $aps = array(), $external = array())
+    public function __construct($title, $body, $deepLink = null, $extend = array())
     {
         $this->title = $title;
         $this->body = $body;
         $this->deepLink = $deepLink;
-        $this->aps = $aps;
-        $this->external = $external;
+        $this->extend = $extend;
     }
 
     /**
@@ -65,13 +58,9 @@ class Payload
             ),
         );
 
-        if ( !empty( $this->aps ) )
+        if ( !empty( $this->extend ) )
         {
-            $payload[ 'aps' ] += $this->aps;
-        }
-        if ( !empty( $this->external ) )
-        {
-            $payload = array_merge( $payload, $this->external );
+            $payload = array_merge_recursive( $payload, $this->extend );
         }
 
         return $payload;
