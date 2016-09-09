@@ -39,17 +39,24 @@ class SocketClient
     private $errorString;
 
     /**
+     * @var boolean
+     */
+    private $validate;
+
+    /**
      * Construct.
      *
      * @param \JWage\APNS\Certificate $certificate
      * @param string $host
      * @param string $port
+     * @param boolean $validate
      */
-    public function __construct(Certificate $certificate, $host, $port)
+    public function __construct(Certificate $certificate, $host, $port, $validate = true)
     {
         $this->certificate = $certificate;
         $this->host = $host;
         $this->port = $port;
+        $this->validate = $validate;
     }
 
     public function __destruct()
@@ -67,7 +74,7 @@ class SocketClient
      */
     public function write($binaryMessage)
     {
-        if (strlen($binaryMessage) > self::PAYLOAD_MAX_BYTES) {
+        if ($this->validate && strlen($binaryMessage) > self::PAYLOAD_MAX_BYTES) {
             throw new \InvalidArgumentException(
                 sprintf('The maximum size allowed for a notification payload is %s bytes; Apple Push Notification Service refuses any notification that exceeds this limit.', self::PAYLOAD_MAX_BYTES)
             );
