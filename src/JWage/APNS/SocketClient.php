@@ -44,19 +44,26 @@ class SocketClient
     private $validate;
 
     /**
+     * @var string
+     */
+    private $caFile;
+
+    /**
      * Construct.
      *
      * @param \JWage\APNS\Certificate $certificate
      * @param string $host
      * @param string $port
      * @param boolean $validate
+     * @param string $caFile
      */
-    public function __construct(Certificate $certificate, $host, $port, $validate = true)
+    public function __construct(Certificate $certificate, $host, $port, $validate = true, $caFile = '')
     {
         $this->certificate = $certificate;
         $this->host = $host;
         $this->port = $port;
         $this->validate = $validate;
+        $this->caFile = $caFile;
     }
 
     public function __destruct()
@@ -101,6 +108,10 @@ class SocketClient
     protected function createStreamContext()
     {
         $streamContext = stream_context_create();
+        if ( !empty( $this->caFile ) )
+        {
+            stream_context_set_option( $streamContext, 'ssl', 'cafile', $this->caFile );
+        }
         stream_context_set_option($streamContext, 'ssl', 'local_cert', $this->certificate->writeToTmp());
 
         return $streamContext;
